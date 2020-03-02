@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MksApi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../3rdParty/MKS/4.10.0.5679/lib/mksapi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

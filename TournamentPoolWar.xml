@@ -5,7 +5,7 @@
     <property name="TournamentPool.version" value="0.0.a"/>
 
     <property name="root.dir" value="${basedir}"/>
-    <property name="3rdParty.dir" value="${root.dir}/../DevTools/3rdParty"/>
+    <property name="3rdParty.dir" value="${root.dir}/3rdParty"/>
     <property name="libs.dir"     value="${root.dir}/Libs"/>
     <property name="tools.dir"   value="${root.dir}/Tools"/>
 
@@ -19,11 +19,6 @@
     <target name="all" depends="compile, build-war" description="Build everything to produce the TournamentPool.war file"/>
 
     <path id="sCache.classpath">
-        <fileset id="libs.jars" dir="${libs.dir}">
-            <include name="KUtils/dist/*.jar"/>
-            <include name="jsLib/dist/*.jar"/>
-        </fileset>
-
         <fileset id="3rdParty.jars" dir="${3rdParty.dir}">
             <include name="Apache/commons-io-2.4/commons-io-2.4.jar"/>
             <include name="Apache/commons-lang3-3.1/commons-lang3-3.1/commons-lang3-3.1.jar"/>
@@ -35,13 +30,11 @@
             <include name="Apache/poi-3.13/poi-ooxml-3.13-20150929.jar"/>
             <include name="Intellij-other/annotations.jar"/>
             <include name="Intellij-other/forms_rt.jar"/>
-            <include name="Java/JSON/Gson/gson-2.3.1.jar"/>
-            <include name="Java/JSON/json-io/json-io-3.0.0.jar"/>
-            <include name="Java/JSON/jsonp/javax.json-1.0.4.jar"/>
             <include name="JUnit/junit4.12/junit-4.12.jar"/>
             <include name="JUnit/hamcrest/hamcrest-core-1.3.jar"/>
             <include name="Java/dom4j/dom4j-1.6.1.jar"/>
             <include name="Java/pcollections/pcollections-3.0.3.jar"/>
+            <include name="javax\servlet\javax.servlet-api\3.1.0\javax.servlet-api-3.1.0.jar"/>
         </fileset>
     </path>
 
@@ -59,7 +52,7 @@
 
     </target>
 
-    <target name="build-war">
+    <target name="build-war" depends="compile">
 <!--        <property name="outdir" value="${root.dir}/out/artifacts/TournamentPool"/>-->
         <property name="outdir" value="W:\webapps"/>
         <property name="warfile" value="${outdir}/TournamentPool.war"/>
@@ -74,10 +67,8 @@
         <property name="absolute.path" location="${classesroot}"/>
         <echo message="classesroot is ${absolute.path}"/>
         <war destfile="${warfile}" webxml="${webdir}/WEB-INF/web.xml">
-            <classes dir="${classesroot}/TournamentPool">
-                <exclude name="**/SCacheServletContextListener.class"/>
-            </classes>
-            <zipfileset dir="${basedir}/resources" prefix="WEB-INF/resources" />
+            <classes dir="${classesroot}/TournamentPool"/>
+<!--            <zipfileset dir="${basedir}/resources" prefix="WEB-INF/resources" />-->
 
 <!--            <lib dir="${3rdParty.dir}/com/intellij/annotations/12.0"/>-->
 <!--            <lib dir="${3rdParty.dir}/commons-io/commons-io/2.4"/>-->

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Perforce">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../3rdParty/Perforce/p4java-2013.1.656196/p4java-2013.1.656196.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
