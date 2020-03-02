@@ -1,0 +1,100 @@
+<?xml version = "1.0"?>
+<project name = "TournamentPool-War" default = "build-war">
+    <property  environment="env"/>
+
+    <property name="TournamentPool.version" value="0.0.a"/>
+
+    <property name="root.dir" value="${basedir}"/>
+    <property name="3rdParty.dir" value="${root.dir}/../DevTools/3rdParty"/>
+    <property name="libs.dir"     value="${root.dir}/Libs"/>
+    <property name="tools.dir"   value="${root.dir}/Tools"/>
+
+    <property name="out.dir" value="${root.dir}/out"/>
+    <property name="production.dir" value="${out.dir}/production"/>
+
+    <!-- Local folders that contain the sources and compiled class & jar files -->
+    <property name="src" value="${basedir}/src"/>
+    <property name="test" value="${basedir}/test"/>
+
+    <target name="all" depends="compile, build-war" description="Build everything to produce the TournamentPool.war file"/>
+
+    <path id="sCache.classpath">
+        <fileset id="libs.jars" dir="${libs.dir}">
+            <include name="KUtils/dist/*.jar"/>
+            <include name="jsLib/dist/*.jar"/>
+        </fileset>
+
+        <fileset id="3rdParty.jars" dir="${3rdParty.dir}">
+            <include name="Apache/commons-io-2.4/commons-io-2.4.jar"/>
+            <include name="Apache/commons-lang3-3.1/commons-lang3-3.1/commons-lang3-3.1.jar"/>
+            <include name="Apache/Velocity/velocity-1.7/velocity-1.7.jar"/>
+            <include name="Apache/poi-3.13/ooxml-lib/xmlbeans-2.6.0.jar"/>
+            <include name="Apache/poi-3.13/ooxml-schemas-1.0.jar"/>
+            <include name="Apache/poi-3.13/poi-3.13-20150929.jar"/>
+            <include name="Apache/poi-3.13/poi-excelant-3.13-20150929.jar"/>
+            <include name="Apache/poi-3.13/poi-ooxml-3.13-20150929.jar"/>
+            <include name="Intellij-other/annotations.jar"/>
+            <include name="Intellij-other/forms_rt.jar"/>
+            <include name="Java/JSON/Gson/gson-2.3.1.jar"/>
+            <include name="Java/JSON/json-io/json-io-3.0.0.jar"/>
+            <include name="Java/JSON/jsonp/javax.json-1.0.4.jar"/>
+            <include name="JUnit/junit4.12/junit-4.12.jar"/>
+            <include name="JUnit/hamcrest/hamcrest-core-1.3.jar"/>
+            <include name="Java/dom4j/dom4j-1.6.1.jar"/>
+            <include name="Java/pcollections/pcollections-3.0.3.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Compiler options -->
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.args" value=" -Xlint"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+
+    <target name="compile">
+        <mkdir dir="${production.dir}/TournamentPool"/>
+        <javac srcdir="${src}" destdir="${production.dir}/TournamentPool" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}">
+            <classpath refid="sCache.classpath"/>
+            <compilerarg line="${compiler.args}"/>
+        </javac>
+
+    </target>
+
+    <target name="build-war">
+<!--        <property name="outdir" value="${root.dir}/out/artifacts/TournamentPool"/>-->
+        <property name="outdir" value="W:\webapps"/>
+        <property name="warfile" value="${outdir}/TournamentPool.war"/>
+
+        <property name="classesroot" value="${root.dir}/out/production"/>
+        <property name="webdir" value="${root.dir}/web"  />
+        <property name="libroot" value="C:\users\${env.USERNAME}\.m2\repository"/>
+
+        <mkdir dir="${outdir}"/>
+        <delete file="$warfile"/>
+
+        <property name="absolute.path" location="${classesroot}"/>
+        <echo message="classesroot is ${absolute.path}"/>
+        <war destfile="${warfile}" webxml="${webdir}/WEB-INF/web.xml">
+            <classes dir="${classesroot}/TournamentPool">
+                <exclude name="**/SCacheServletContextListener.class"/>
+            </classes>
+            <zipfileset dir="${basedir}/resources" prefix="WEB-INF/resources" />
+
+<!--            <lib dir="${3rdParty.dir}/com/intellij/annotations/12.0"/>-->
+<!--            <lib dir="${3rdParty.dir}/commons-io/commons-io/2.4"/>-->
+<!--            <lib dir="${3rdParty.dir}/commons-lang/commons-lang/2.4"/>-->
+<!--            <lib dir="${3rdParty.dir}/dom4j/dom4j/1.6.1"/>-->
+<!--            <lib dir="${3rdParty.dir}/com/google/code/gson/gson/2.3.1"/>-->
+<!--            <lib dir="${3rdParty.dir}/com/google/guava/guava/18.0"/>-->
+<!--            <lib dir="${3rdParty.dir}/javax/json/javax.json-api/1.1.2"/>-->
+<!--            <lib dir="${3rdParty.dir}/com/cedarsoftware/json-io/3.0.2"/>-->
+<!--            <lib dir="${3rdParty.dir}/org/glassfish/javax.json/1.0.4"/>-->
+
+            <manifest>
+                <section name="version">
+                    <attribute name="TournamentPoolVersion" value="${TournamentPool.version}"/>
+                </section>
+            </manifest>
+        </war>
+
+    </target>
+</project>
