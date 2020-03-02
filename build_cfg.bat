@@ -14,31 +14,23 @@ REM ****************************************************************************
 REM ******************************************************************************
 
 :SetUpEnvironment
-echo Setting up Environment for KUtils Build:
+echo Setting up Environment for TournamentPool Build:
 
 :CanopusEnv
 if NOT "%THIRD_PARTY_DIR%" == "" goto AntJavaEnv
-echo .   Tools, Libs, Canopus, 3rd-party folders and paths.
-PUSHD ..\DevTools\3rdParty
+echo .   TournamentPool 3rd-party folders and paths.
+PUSHD 3rdParty
 if ERRORLEVEL 1 echo ERROR, no 3rd Party Folder
 set THIRD_PARTY_DIR=%CD%
 echo 3rd. %THIRD_PARTY_DIR%
-POPD
-PUSHD ..\DevTools\Tools
-set TOOLS_DIR=%CD%
-if ERRORLEVEL 1 echo ERROR, no Tools Folder
-POPD
-PUSHD ..\DevTools\..\Libs
-set LIBS_DIRECTORY=%CD%
-if ERRORLEVEL 1 echo ERROR, no Libs Folder
 POPD
 
 :AntJavaEnv
 REM check to see if Ant's environment is already set up
 echo .   Java and Ant folders.
 set ANT_HOME=%THIRD_PARTY_DIR%\ant\apache-ant-1.7.0
-if exist "%ProgramFiles%\Java\jdk1.8.0_40" (
-    set JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0_40
+if exist "%ProgramFiles%\Java\jdk1.8.0_192" (
+    set JAVA_HOME=%ProgramFiles%\Java\jdk1.8.0_192
 ) else (
     if NOT "%JAVA_JDK_HOME%"=="" (
 		set JAVA_HOME=%JAVA_JDK_HOME%
