@@ -10,6 +10,9 @@
     <property name="out.dir" value="${root.dir}/out"/>
     <property name="production.dir" value="${out.dir}/production"/>
 
+    <property name="war.dir" value="${root.dir}/out/artifacts/TournamentPool"/>
+    <property name="warfile" value="${war.dir}/TournamentPool.war"/>
+
     <!-- Local folders that contain the sources and compiled class & jar files -->
     <property name="src" value="${basedir}/src"/>
     <property name="test" value="${basedir}/test"/>
@@ -51,15 +54,12 @@
     </target>
 
     <target name="build-war" depends="compile">
-<!--        <property name="outdir" value="${root.dir}/out/artifacts/TournamentPool"/>-->
-        <property name="outdir" value="W:\webapps"/>
-        <property name="warfile" value="${outdir}/TournamentPool.war"/>
 
         <property name="classesroot" value="${root.dir}/out/production"/>
         <property name="webdir" value="${root.dir}/web"  />
 
-        <mkdir dir="${outdir}"/>
-        <delete file="$warfile"/>
+        <mkdir dir="${war.dir}"/>
+        <delete file="${warfile}"/>
 
         <property name="absolute.path" location="${classesroot}"/>
         <echo message="classesroot is ${absolute.path}"/>
@@ -85,4 +85,9 @@
         </war>
 
     </target>
+
+    <target name="deploy">
+        <copy file="${warfile}" todir="\\k1web04\c$\Program Files (x86)\Apache Software Foundation\Tomcat 9.0\webapps"/>
+    </target>
+
 </project>
