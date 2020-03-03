@@ -6,8 +6,6 @@
 
     <property name="root.dir" value="${basedir}"/>
     <property name="3rdParty.dir" value="${root.dir}/3rdParty"/>
-    <property name="libs.dir"     value="${root.dir}/Libs"/>
-    <property name="tools.dir"   value="${root.dir}/Tools"/>
 
     <property name="out.dir" value="${root.dir}/out"/>
     <property name="production.dir" value="${out.dir}/production"/>
@@ -59,7 +57,6 @@
 
         <property name="classesroot" value="${root.dir}/out/production"/>
         <property name="webdir" value="${root.dir}/web"  />
-        <property name="libroot" value="C:\users\${env.USERNAME}\.m2\repository"/>
 
         <mkdir dir="${outdir}"/>
         <delete file="$warfile"/>
@@ -68,7 +65,7 @@
         <echo message="classesroot is ${absolute.path}"/>
         <war destfile="${warfile}" webxml="${webdir}/WEB-INF/web.xml">
             <classes dir="${classesroot}/TournamentPool"/>
-<!--            <zipfileset dir="${basedir}/resources" prefix="WEB-INF/resources" />-->
+            <zipfileset dir="${webdir}" prefix="" />
 
 <!--            <lib dir="${3rdParty.dir}/com/intellij/annotations/12.0"/>-->
 <!--            <lib dir="${3rdParty.dir}/commons-io/commons-io/2.4"/>-->

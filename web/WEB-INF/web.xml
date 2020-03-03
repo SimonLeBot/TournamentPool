@@ -9,6 +9,6 @@
 
   <servlet-mapping>
     <servlet-name>TournamentPool</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/Default/*</url-pattern>
   </servlet-mapping>
 </web-app>
