@@ -63,6 +63,11 @@
 
         <property name="absolute.path" location="${classesroot}"/>
         <echo message="classesroot is ${absolute.path}"/>
+
+        <tstamp>
+            <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+        </tstamp>
+
         <war destfile="${warfile}" webxml="${webdir}/WEB-INF/web.xml">
             <classes dir="${classesroot}/TournamentPool"/>
             <zipfileset dir="${webdir}" prefix="" />
@@ -80,6 +85,7 @@
             <manifest>
                 <section name="version">
                     <attribute name="TournamentPoolVersion" value="${TournamentPool.version}"/>
+                    <attribute name="Built-Date" value="${TODAY}"/>
                 </section>
             </manifest>
         </war>
