@@ -72,16 +72,6 @@
             <classes dir="${classesroot}/TournamentPool"/>
             <zipfileset dir="${webdir}" prefix="" />
 
-<!--            <lib dir="${3rdParty.dir}/com/intellij/annotations/12.0"/>-->
-<!--            <lib dir="${3rdParty.dir}/commons-io/commons-io/2.4"/>-->
-<!--            <lib dir="${3rdParty.dir}/commons-lang/commons-lang/2.4"/>-->
-<!--            <lib dir="${3rdParty.dir}/dom4j/dom4j/1.6.1"/>-->
-<!--            <lib dir="${3rdParty.dir}/com/google/code/gson/gson/2.3.1"/>-->
-<!--            <lib dir="${3rdParty.dir}/com/google/guava/guava/18.0"/>-->
-<!--            <lib dir="${3rdParty.dir}/javax/json/javax.json-api/1.1.2"/>-->
-<!--            <lib dir="${3rdParty.dir}/com/cedarsoftware/json-io/3.0.2"/>-->
-<!--            <lib dir="${3rdParty.dir}/org/glassfish/javax.json/1.0.4"/>-->
-
             <manifest>
                 <section name="version">
                     <attribute name="TournamentPoolVersion" value="${TournamentPool.version}"/>
@@ -93,7 +83,8 @@
     </target>
 
     <target name="deploy">
-        <copy file="${warfile}" todir="\\k1web04\c$\Program Files (x86)\Apache Software Foundation\Tomcat 9.0\webapps"/>
+<!--        <copy file="${warfile}" todir="\\k1web04\c$\Program Files (x86)\Apache Software Foundation\Tomcat 9.0\webapps"/>-->
+        <copy file="${warfile}" todir="C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps"/>
     </target>
 
 </project>
