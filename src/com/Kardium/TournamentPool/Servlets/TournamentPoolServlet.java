@@ -1,11 +1,12 @@
-package com.Kardium.TournamentPool;
+package com.Kardium.TournamentPool.Servlets;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
+
+import static com.Kardium.TournamentPool.Servlets.ServletUtils.outputString;
 
 public class TournamentPoolServlet extends HttpServlet {
     public static final long serialVersionUID = 1;
@@ -39,13 +40,6 @@ public class TournamentPoolServlet extends HttpServlet {
 
     private String getRequest(String urlString) {
         return urlString.substring(urlString.lastIndexOf("\\") + 1).replaceAll(".html", "");
-    }
-
-    private void outputString(String report, String format, HttpServletResponse resp) throws IOException {
-        resp.setContentType(format);
-        PrintStream ps = new PrintStream(resp.getOutputStream());
-        ps.println(report);
-        ps.flush();
     }
 
 }

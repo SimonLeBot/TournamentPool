@@ -4,11 +4,21 @@
             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1" >
   <servlet>
     <servlet-name>TournamentPool</servlet-name>
-    <servlet-class>com.Kardium.TournamentPool.TournamentPoolServlet</servlet-class>
+    <servlet-class>com.Kardium.TournamentPool.Servlets.TournamentPoolServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>com.Kardium.TournamentPool.Servlets.LoginServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>TournamentPool</servlet-name>
     <url-pattern>/Default/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/Login/*</url-pattern>
   </servlet-mapping>
 </web-app>

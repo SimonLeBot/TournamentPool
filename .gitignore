@@ -1,2 +1,6 @@
 **/out/*
 **/webapps/*
+**/.idea/*
+
+# Project files
+**/*.iml
