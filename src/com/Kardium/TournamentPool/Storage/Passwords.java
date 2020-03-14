@@ -13,101 +13,88 @@ public class Passwords {
     private static final File PASSWORD_FILE = new File("C:/TournamentPool/passwords.txt");
     private static Map<String, Integer> passwords;
 
-    private final Connection connection;
+    private Connection connection;
 
-    public Passwords() throws Exception {
-        Class.forName("org.firebirdsql.jdbc.FBDriver");
-        connection = DriverManager.getConnection(
-                "jdbc:firebirdsql:kfishbowl3/3050:C:/Program Files/Fishbowl/database/data/TOURNAMENTPOOLDB.FDB",
-                "ksqlread","ksqlread");
+    public Passwords() {
+        try {
+            Class.forName("org.firebirdsql.jdbc.FBDriver");
+            connection = DriverManager.getConnection(
+                    "jdbc:firebirdsql:kfishbowl3/3050:C:/Program Files/Fishbowl/database/data/TOURNAMENTPOOLDB.FDB",
+                    "ksqlread", "ksqlread");
+        } catch (Exception e) {
+            connection = null;
+        }
     }
 
     public boolean isExistingUser(String name) {
         try {
-            String check = "SELECT PASSWORD " +
-                    "FROM PASSWORDS\n" +
-                    "WHERE USERNAME='" + name + "';";
-            ResultSet resultSet = executeRequest(check);
-            resultSet.getClob("PASSWORD");
-            resultSet.getArray(1);
-            System.out.println("Result set = " + resultSet);
+            String sqlRequest = "SELECT Name FROM PasswordTable\n" +
+                    "WHERE Name='" + name + "';";
+            ResultSet resultSet = executeRequest(sqlRequest);
+            if (resultSet.next()) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException sqle) {
             // deal with it
+            return false;
         }
-        return getPasswords().containsKey(name);
     }
 
-    int getPasswordFormDB(String name) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute("SELECT * FROM PASSWORDS WHERE ");
-        return statement.getResultSet().findColumn(name);
+    public boolean registerNewUser(String name, int password) throws AlreadyRegisteredUser{
+        if (isExistingUser(name)) {
+            try {
+                String sqlRequest = "DELETE FROM PasswordTable WHERE Name=" + name;
+                int ret = connection.createStatement().executeUpdate(sqlRequest);
+            } catch (SQLException sqle) {
+
+            }
+            //throw new AlreadyRegisteredUser();
+        } /*else {*/
+            try {
+                String sqlRequest = "INSERT INTO PasswordTable VALUES ('" + name + "', " + password + ")";
+                return 1 == connection.createStatement().executeUpdate(sqlRequest);
+            } catch (SQLException sqle) {
+                return false;
+            }
+        /*}*/
+    }
+
+    public int getPassword(String name) throws NotRegisteredUserException{
+        if (!isExistingUser(name )) {
+            throw new NotRegisteredUserException();
+        } else {
+            try {
+                String sqlRequest = "SELECT PasswordChosen FROM PasswordTable\n" +
+                        "WHERE Name='" + name + "';";
+                ResultSet resultSet = executeRequest(sqlRequest);
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else {
+                    return -1;
+                }
+
+                } catch (SQLException sqle) {
+                return -1;
+            }
+        }
     }
 
     private ResultSet executeRequest(String request) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.execute(request);
-        return statement.getResultSet();
-    }
-
-    public void registerNewUser(String name, int password) throws AlreadyRegisteredUser{
-        String register = "INSERT INTO PASSWORDS (ID, USERNAME, \"PASSWORD\")\n" +
-                " VALUES (\n" +
-                "1, \n" +
-                "'" + name + "', \n" +
-                password + "\n" +
-                ")";
-        if (isExistingUser(name)) {
-            throw new AlreadyRegisteredUser();
-        }
-        getPasswords().put(name, password);
-        savePasswords();
-    }
-
-    public int getPassword(String name) throws NotRegisteredUserException{
-        Integer password = getPasswords().get(name);
-        if (password == null) {
-            throw new NotRegisteredUserException();
-        }
-        return password;
-    }
-
-    private static void savePasswords() {
-        List<String> lines = passwords.entrySet().stream()
-                .map((e) -> e.getKey() + ";" + e.getValue())
-                .collect(Collectors.toList());
-        try {
-            Files.deleteIfExists(PASSWORD_FILE.toPath());
-            PASSWORD_FILE.createNewFile();
-            Files.write(PASSWORD_FILE.toPath(), lines, StandardOpenOption.WRITE);
-        } catch (IOException e) {
-            System.err.println(e);
-            System.out.println(e);
-        }
-    }
-
-    private static Map<String, Integer> getPasswords() {
-        try {
-            if (passwords == null) {
-                passwords = new HashMap<>();
-                // Load all the passwords
-                if (!PASSWORD_FILE.exists()) {
-                    PASSWORD_FILE.getParentFile().mkdirs();
-                    PASSWORD_FILE.createNewFile();
-                }
-                List<String> lines = Files.readAllLines(PASSWORD_FILE.toPath());
-                for (String line : lines){
-                    String[] ids = line.split(";");
-                    passwords.put(ids[0], Integer.parseInt(ids[1]));
-                }
-            }
-            return passwords;
-        } catch (IOException ioe) {
-            return new HashMap<>();
-        }
+        return statement.executeQuery(request);
     }
 
     public static void main(String [] args) throws Exception {
         Passwords p = new Passwords();
         p.isExistingUser("TempUser");
+        p.registerNewUser("Yona", 789456123);
+        int password = p.getPassword("Yona");
+        if (789456123 ==password) {
+            System.out.println("Everything works");
+        } else {
+            System.out.println("Nothing works");
+        }
     }
 }

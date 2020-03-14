@@ -7,6 +7,7 @@ import com.Kardium.TournamentPool.Storage.Passwords;
 public class LoginVerifier {
     private final String name;
     private final int password;
+    private static final Passwords passwords = new Passwords();
 
     public LoginVerifier(String name, int password) {
         this.name = name;
@@ -14,15 +15,15 @@ public class LoginVerifier {
     }
 
     public boolean isValidPassword() {
-//        try {
-//            return password == Passwords.getPassword(name);
-//        } catch (NotRegisteredUserException e) {
-//            try {
-//                Passwords.registerNewUser(name, password);
-//                return password == Passwords.getPassword(name);
-//            } catch (AlreadyRegisteredUser aru) {
-//                return false;
-//            }
-//        }
-return true;    }
+        try {
+            return password == passwords.getPassword(name);
+        } catch (NotRegisteredUserException e) {
+            try {
+                passwords.registerNewUser(name, password);
+                return password == passwords.getPassword(name);
+            } catch (AlreadyRegisteredUser aru) {
+                return false;
+            }
+        }
+    }
 }
